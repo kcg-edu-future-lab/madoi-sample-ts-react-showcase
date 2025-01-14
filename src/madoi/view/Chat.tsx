@@ -25,7 +25,7 @@ export function Chat({logs}: Props){
         <button type="submit">送信</button>
       </form>
       </div>
-      <div style={{height: "360px", overflow: "auto", border: "1px solid", borderRadius: "4px"}}>
+      <div style={{height: "240px", overflow: "auto", border: "1px solid", borderRadius: "4px"}}>
         {(logs?.getLogs() || []).map((l, i)=>
           <div key={i}><span>{l.name}</span>: <span>{l.message}</span></div>
         )}
