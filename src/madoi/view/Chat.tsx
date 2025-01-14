@@ -1,6 +1,5 @@
 import { FormEventHandler, useRef } from "react";
 import { ChatLogs } from "../model/ChatLogs";
-import { Button, TextField } from "@mui/material";
 
 interface Props{
     logs: ChatLogs | null;
@@ -18,15 +17,15 @@ export function Chat({logs}: Props){
     }
   };
   return (
-    <div style={{height: "100%"}}>
+    <div>
       <div>
       <form onSubmit={onSubmit}>
-        <TextField inputRef={name} label="名前" size="small" defaultValue="匿名"></TextField>
-        <TextField inputRef={message} focused size="small" placeholder="メッセージ"></TextField>
-        <Button type="submit" variant="contained">送信</Button>
+        <label>名前: <input ref={name} placeholder="名前" size={4} defaultValue="匿名" /></label>
+        <input ref={message} autoFocus placeholder="メッセージ" style={{width: "95%"}} />
+        <button type="submit">送信</button>
       </form>
       </div>
-      <div style={{height: "240px", overflow: "auto", border: "1px solid", borderRadius: "4px"}}>
+      <div style={{height: "360px", overflow: "auto", border: "1px solid", borderRadius: "4px"}}>
         {(logs?.getLogs() || []).map((l, i)=>
           <div key={i}><span>{l.name}</span>: <span>{l.message}</span></div>
         )}
