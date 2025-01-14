@@ -1,8 +1,8 @@
 import { GetState, SetState, Share, ShareClass } from "../madoi";
 
 interface Drawing{
-    prevX: number, prevY: number,
-    x: number, y: number,
+    x1: number, y1: number,
+    x2: number, y2: number,
     size: number, color: string
 }
 
@@ -63,7 +63,6 @@ export class DrawingCanvas{
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
             this.ctx.fillStyle = "rgb(0, 0, 0)";
             this.ctx.font = "60px 'ＭＳ Ｐゴシック'";
-            const _letter = ["A", "B", "C", "D"];
             this.ctx.fillText("ボード", 10, 70);
         }
     }
@@ -109,19 +108,18 @@ export class DrawingCanvas{
     }
 
     @Share({maxLog: 100})
-    draw(prevX: number, prevY: number, x: number, y: number, size: number, color: string) {
+    draw(x1: number, y1: number, x2: number, y2: number, size: number, color: string) {
         if(this.loading){
             // 画像がロード中の場合は描画を後回しにする
             this.pendingDrawings.push({
-                prevX: prevX, prevY: prevY,
-                x: x, y: y, size: size, color: color
+                x1, y1, x2, y2, size, color
             });
         } else if(this.ctx){
             this.ctx.beginPath();
             this.ctx.strokeStyle = color;
             this.ctx.lineWidth = size;
-            this.ctx.moveTo(prevX, prevY);
-            this.ctx.lineTo(x, y);
+            this.ctx.moveTo(x1, y1);
+            this.ctx.lineTo(x2, y2);
             this.ctx.stroke();
         }
     }
@@ -142,8 +140,8 @@ export class DrawingCanvas{
                 this.ctx.beginPath();
                 this.ctx.strokeStyle = p.color;
                 this.ctx.lineWidth = p.size;
-                this.ctx.moveTo(p.prevX, p.prevY);
-                this.ctx.lineTo(p.x, p.y);
+                this.ctx.moveTo(p.x1, p.y1);
+                this.ctx.lineTo(p.x2, p.y2);
                 this.ctx.stroke();
             }
             this.pendingDrawings = new Array();
