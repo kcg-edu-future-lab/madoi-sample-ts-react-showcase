@@ -22,14 +22,14 @@ class State<T>{
   }
 }
 
-export function useMadoiState<T>(madoi: Madoi, factory: ()=>T){
+export function useMadoiState<T>(madoi: Madoi, factory: ()=>T): [T, (v: T)=>void]{
   const value = useRef<State<T>>(null!);
   const [_state, setState] = useState<any>();
 
   const rerenderOnStateChange = true;
   useEffect(()=>{
     if(value.current !== null) return;
-    const obj = factory() as any;
+    const obj = new State(factory()) as any;
     value.current = obj;
     let getStateMethod = null;
     for(let p of Object.getOwnPropertyNames(Object.getPrototypeOf(obj))){
@@ -67,7 +67,7 @@ export function useMadoiState<T>(madoi: Madoi, factory: ()=>T){
     setState(getStateMethod.apply(obj));
   }, []);
 
-  return [value.current, (v: T)=>{value.current?.updateState(v)}];
+  return [value.current?.getState(), (v: T)=>{value.current?.updateState(v)}];
 }
 
 export function useMadoiObject<T>(madoi: Madoi, factory: ()=>T, rerenderOnStateChange = true): T | null {
