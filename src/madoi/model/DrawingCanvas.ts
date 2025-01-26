@@ -102,8 +102,6 @@ export class DrawingCanvas{
         const c = this.newCanvas(this.canvas.width, this.canvas.height);
         this.ctx = c.getContext("2d");
         this.ctx?.drawImage(this.canvas, 0, 0);
-        console.log(this.canvas);
-        console.log(c);
         this.canvas = c;
     }
 
