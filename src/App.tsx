@@ -1,20 +1,14 @@
-import React, { createContext, PropsWithChildren, useContext } from 'react';
+import { PropsWithChildren, useContext } from 'react';
 import { Box, Container } from '@mui/material';
 import  Grid  from "@mui/material/Grid2";
 import './App.css'
-import { Madoi } from './madoi/madoi';
 import { useMadoiObject, useMadoiState } from './madoi/reactHelpers';
 import { DrawingCanvas } from './madoi/model/DrawingCanvas';
 import { Whiteboard } from './madoi/view/Whiteboard';
 import { ChatLogs } from './madoi/model/ChatLogs';
 import { Chat } from './madoi/view/Chat';
 import { Text } from './madoi/view/Text';
-
-const roomId = "madoi-sample-ts-react-showcase-fjnwle3k2qf";
-const apikey = "ahfuTep6ooDi7Oa4";
-export const MadoiContext = createContext(new Madoi(
-  `ws://localhost:8080/madoi/rooms/${roomId}`, apikey
-));
+import { ASREngineContext, MadoiContext } from './main';
 
 function Desc(props: PropsWithChildren){
   return <div style={{backgroundColor: "#aaccff", borderRadius: "2px"}}><small>
@@ -23,6 +17,7 @@ function Desc(props: PropsWithChildren){
 }
 
 export default function App() {
+  const asr = useContext(ASREngineContext);
   const madoi = useContext(MadoiContext);
   const [text, setText] = useMadoiState(madoi, ()=>"hello");
   const logs = useMadoiObject(madoi, ()=>new ChatLogs());
@@ -39,7 +34,7 @@ export default function App() {
         <Box component="fieldset">
           <legend>Chat</legend>
           <Desc>送信ボタンを押すとチャットメッセージが追加されます。</Desc>
-          <Chat logs={logs} />
+          <Chat asr={asr} logs={logs} />
         </Box>
       </Grid>
       <Grid size={{xs:9,md:9}}>
