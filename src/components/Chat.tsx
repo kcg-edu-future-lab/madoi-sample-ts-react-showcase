@@ -1,7 +1,6 @@
 import { ChangeEventHandler, FormEventHandler, useEffect, useRef, useState } from "react";
-import { ChatLogs } from "../model/ChatLogs";
-import { ASREngine, ASRResult } from "../../util/ASREngine";
-import { TypedCustomEvent } from "../madoi";
+import { ChatLogs } from "./model/ChatLogs";
+import { ASREngine, ResultsListener } from "../util/ASREngine";
 
 interface Props{
   asr: ASREngine;
@@ -27,7 +26,7 @@ export function Chat({asr, logs}: Props){
     if(enabled) asr.start();
     else asr.stop();
   };
-  const onAsrResults = ({detail: {results}}: TypedCustomEvent<ASREngine, ASRResult>)=>{
+  const onAsrResults: ResultsListener = ({detail: {results}})=>{
     const n = name.current.value.trim();
     const message = results.join("\n");
     if(message.length == results.length - 1) return;
@@ -38,11 +37,11 @@ export function Chat({asr, logs}: Props){
   };
 
   useEffect(()=>{
-    asr.on("results", onAsrResults);
-    asr.on("finished", onAsrFinished);
+    asr.addEventListener("results", onAsrResults);
+    asr.addEventListener("finished", onAsrFinished);
     return ()=>{
-      asr.off("finished", onAsrFinished);
-      asr.off("results", onAsrResults);
+      asr.removeEventListener("finished", onAsrFinished);
+      asr.removeEventListener("results", onAsrResults);
     //  asr.clearAllListeners(); // viteでhot update時にcleanupが十分な回数呼ばれない問題への対処。
     };
   }, []);

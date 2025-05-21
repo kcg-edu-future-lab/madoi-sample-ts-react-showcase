@@ -13,6 +13,8 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.3.1",
+    "madoi-client": "^0.1.0",
+    "madoi-client-react": "^0.1.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

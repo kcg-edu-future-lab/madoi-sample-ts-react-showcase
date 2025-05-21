@@ -1,4 +1,4 @@
-import { GetState, SetState, Share, ShareClass } from "../madoi";
+import { GetState, SetState, Share, ShareClass } from "madoi-client";
 
 type Log = {name: string, message: string};
 @ShareClass({className: "Chat"})

@@ -1,4 +1,4 @@
-import { GetState, SetState, Share, ShareClass } from "../madoi";
+import { GetState, SetState, Share, ShareClass } from "madoi-client";
 
 interface Drawing{
     x1: number, y1: number,

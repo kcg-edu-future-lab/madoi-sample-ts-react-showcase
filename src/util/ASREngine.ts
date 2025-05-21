@@ -1,12 +1,11 @@
-import { TypedEventTarget2 } from "./TypedEvents";
+import { TypedEventListenerOrEventListenerObject, TypedEventTarget } from "madoi-client";
 
-export interface ASRResult{
+export interface ResultsDetail{
   results: string[];
 }
-export interface ASRFinished{
-}
-export class ASREngine extends TypedEventTarget2<ASREngine,
-   "results", ASRResult, "finished", ASRFinished>{
+export type ResultsListener = TypedEventListenerOrEventListenerObject<ASREngine, ResultsDetail>;
+export class ASREngine extends TypedEventTarget<ASREngine,
+   {results: ResultsDetail, "finished": void}>{
   private recognition: SpeechRecognition ;
   private recognizing = false;
   private lastSize = 0;
@@ -27,7 +26,7 @@ export class ASREngine extends TypedEventTarget2<ASREngine,
       }
       this.lastSize += results.length;
       if(results.length > 0)
-        this.fire("results", {results});
+        this.dispatchCustomEvent("results", {results});
     };
     rec.onstart = () => {
       console.info(`音声認識(${this.language})を開始しました.`);
@@ -49,7 +48,7 @@ export class ASREngine extends TypedEventTarget2<ASREngine,
         console.log("音声認識を再起動します.");
         this.recognition?.start();
       } else{
-        this.fire("finished");
+        this.dispatchCustomEvent("finished");
       }
     };
   }
