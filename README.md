@@ -1,8 +1,8 @@
 # Madoi sample application with Typescript and React
 
-[Madoi](https://github.com/kcg-edu-future-lab/madoi)を[React](https://ja.react.dev/)を使用したサンプルアプリです。
+[Madoi](https://github.com/kcg-edu-future-lab/madoi)と[React](https://ja.react.dev/)を使ったサンプルアプリです。
 
-useMadoiStateフックおよびuseMadoiObjectフックを導入([reactHelopers.ts](https://github.com/kcg-edu-future-lab/madoi-sample-ts-react-showcase/blob/main/src/madoi/reactHelpers.ts)で定義)しており、これにより、簡潔な記述で共有状態や共有オブジェクトを作成できます。
+Madoiのクライアントライブラリ、[madoi-client](https://www.npmjs.com/package/madoi-client)および[madoi-cient-react](https://www.npmjs.com/package/madoi-client-react)で導入される`useSharedState`フックおよび`useSharedModel`フックを利用しており、簡潔な記述で共有状態や共有オブジェクトを作成できます。
 
 言語は[TypeScript](https://www.typescriptlang.org/), ビルドツールには[Vite](https://ja.vite.dev/)(react-swc)を使用しています。
 
@@ -11,11 +11,11 @@ useMadoiStateフックおよびuseMadoiObjectフックを導入([reactHelopers.t
 <img width="906" alt="image" src="https://github.com/user-attachments/assets/266c5da7-c237-4b1e-8920-bd7884c39e88" />
 
 
-## useMadoiStateフック
+## useSharedStateフック
 
-共有状態を作成するフックです。useStateと同様、最新の状態と状態変更関数を返します。状態変更関数を実行すると、実行通知がサーバに送信され、サーバから全てのブラウザに送信されます。実行通知を受信すると、コンポーネントの再レンダリングが行われます。
+共有状態を作成するフックです。useStateと同様、最新の状態と状態変更関数を返します。状態変更関数を実行すると、変更通知がサーバに送信され、サーバから全てのブラウザに送信されます。変更通知を受信すると、実際に状態が変更され、コンポーネントの再レンダリングが行われます。
 
-以下は、ローカルに起動させたMadoiサーバを利用して、useMadoiStateによる状態共有を行う例です。文字列を共有し、その文字列と変更のためのフォームを表示しています。
+以下は、ローカルに起動させたMadoiサーバを利用して、`useSharedState`による状態共有を行う例です。文字列を共有し、その文字列と変更のためのフォームを表示しています。
 
 ```tsx
 const roomId = "MadoiRoomID";
@@ -25,7 +25,7 @@ export const MadoiContext = createContext(new Madoi(
 ));
 export function Text(){
   const madoi = useContext(MadoiContext);
-  const [text, setText] = useMadoiState(madoi, ()=>"");
+  const [text, setText] = useSharedState(madoi, ()=>"");
   const textInput = useRef<HTMLInputElement>(null!);
   const onSubmit: FormEventHandler = e=>{
     e.preventDefault();
@@ -47,9 +47,9 @@ export function Text(){
 }
 ```
 
-## useMadoiObjectフック
+## useSharedObjectフック
 
-共有オブジェクトを作成するフックです。Madoiにおける共有オブジェクトは、Madoiのアノテーション(@SharClass, @GetState, @SetState, @Share)が適切に付与されたクラスから作成されるオブジェクトです。@Shareが付与されたメソッドが実行されると、実行通知がサーバに送信され、サーバから全てのブラウザに送信されます。実行通知を受信すると、実際にメソッドが実行され、その後コンポーネントの再レンダリングが行われます。
+共有オブジェクトを作成するフックです。Madoiにおける共有オブジェクトは、Madoiのアノテーション(`@SharClass`, `@GetState`, `@SetState`, `@Share`)が付与されたクラスから作成されるオブジェクトです。`@Share`が付与されたメソッドが実行されると、実行通知がサーバに送信され、サーバから全てのブラウザに送信されます。実行通知を受信すると、実際にメソッドが実行され、その後コンポーネントの再レンダリングが行われます。
 
 ```tsx
 const roomId = "MadoiRoomID";
@@ -81,7 +81,7 @@ export class ChatLogs{
 
 function Chat(){
   const madoi = useContext(MadoiContext);
-  const logs = useMadoiObject(madoi, ()=>new ChatLogs());
+  const logs = useSharedObject(madoi, ()=>new ChatLogs());
   const name = useRef<HTMLInputElement>(null!);
   const message = useRef<HTMLInputElement>(null!);
   const onSubmit: FormEventHandler = e=>{
