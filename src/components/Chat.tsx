@@ -58,7 +58,7 @@ export function Chat({asr, logs}: Props){
       </form>
       </div>
       <div style={{height: "240px", overflow: "auto", border: "1px solid", borderRadius: "4px"}}>
-        {(logs?.getLogs() || []).map((l, i)=>
+        {logs.getLogs().map((l, i)=>
           <div key={i}><span>{l.name}</span>: <span>{l.message}</span></div>
         )}
       </div>

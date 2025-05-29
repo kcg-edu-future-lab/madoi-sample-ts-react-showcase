@@ -103,7 +103,7 @@ function Chat(){
       </form>
       </div>
       <div>
-        {(logs?.getLogs() || []).map((l, i)=>
+        {logs.getLogs().map((l, i)=>
           <div key={i}><span>{l.name}</span>: <span>{l.message}</span></div>
         )}
       </div>
