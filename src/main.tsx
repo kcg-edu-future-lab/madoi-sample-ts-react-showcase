@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>  // useEffectのcleanupが正常に実行されないためコメントアウト
+  <StrictMode>
     <App />
   </StrictMode>,
 )
