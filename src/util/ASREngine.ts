@@ -1,10 +1,10 @@
-import { TypedEventListenerOrEventListenerObject, TypedEventTarget } from "madoi-client";
+import { TypedCustomEventListenerOrObject, TypedCustomEventTarget } from "tcet";
 
 export interface ResultsDetail{
   results: string[];
 }
-export type ResultsListener = TypedEventListenerOrEventListenerObject<ASREngine, ResultsDetail>;
-export class ASREngine extends TypedEventTarget<ASREngine,
+export type ResultsListener = TypedCustomEventListenerOrObject<ASREngine, ResultsDetail>;
+export class ASREngine extends TypedCustomEventTarget<ASREngine,
    {results: ResultsDetail, "finished": void}>{
   private recognition: SpeechRecognition ;
   private recognizing = false;

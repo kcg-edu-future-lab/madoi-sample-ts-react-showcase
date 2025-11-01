@@ -1,11 +1,12 @@
-import { GetState, SetState, Share, ShareClass } from "madoi-client";
+import { ChangeState, ClassName, Distributed, GetState, SetState } from "madoi-client";
 
 type Log = {name: string, message: string};
-@ShareClass({className: "Chat"})
+@ClassName("Chat")
 export class ChatLogs{
     private logs: Log[] = [];
 
-    @Share()
+    @Distributed()
+    @ChangeState()
     addLog(name: string, message: string){
         this.logs = [...this.logs, {name, message}];
     }

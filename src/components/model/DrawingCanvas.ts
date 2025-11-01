@@ -1,4 +1,4 @@
-import { GetState, SetState, Share, ShareClass } from "madoi-client";
+import { ChangeState, ClassName, Distributed, GetState, SetState } from "madoi-client";
 
 interface Drawing{
     x1: number, y1: number,
@@ -6,7 +6,7 @@ interface Drawing{
     size: number, color: string
 }
 
-@ShareClass({className: "DrawingCanvas"})
+@ClassName("DrawingCanvas")
 export class DrawingCanvas{
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D | null = null;
@@ -105,7 +105,8 @@ export class DrawingCanvas{
         this.canvas = c;
     }
 
-    @Share({maxLog: 100})
+    @Distributed()
+    @ChangeState()
     draw(x1: number, y1: number, x2: number, y2: number, size: number, color: string) {
         if(this.loading){
             // 画像がロード中の場合は描画を後回しにする
@@ -122,7 +123,7 @@ export class DrawingCanvas{
         }
     }
   
-    @GetState({maxInterval: 10000, maxUpdates: 100})
+    @GetState({maxInterval: 10000})
     getState(): string {
         return this.canvas?.toDataURL("image/png") || "";
     }
